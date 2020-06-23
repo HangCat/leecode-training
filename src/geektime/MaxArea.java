@@ -39,7 +39,6 @@ public class MaxArea {
 	 * 指针分为头指针和尾指针，两个指针移动的方向是相向（从两边向中间移动）
 	 * 头指针从0开始index，尾指针从 height.length - 1 开始index
 	 * 在循环中，每次移动两个指针中较小的那个指针
-	 *
 	 */
 	public static int maxAreaInDoubleIndex(int[] height) {
 		int wide = height.length - 1;
@@ -69,6 +68,40 @@ public class MaxArea {
 //		int[] aa = {1, 2, 4, 3};
 		System.out.println("maxArea(aa) = " + maxAreaInForce(aa));
 		System.out.println("maxAreaInDoubleIndex(aa) = " + maxAreaInDoubleIndex(aa));
+	}
+
+	public static int m1(int[] height) {
+		int size = height.length - 1;
+		int wide = size;
+		int area = Math.min(height[0], height[size]) * wide;
+		while (wide > 0) {
+			wide--;
+			for (int i = 0; (i + wide) <= size; i++) {
+				int tempHeight = Math.min(height[i], height[i + wide]);
+				int temp = wide * tempHeight;
+				if (area < temp) {
+					area = temp;
+				}
+			}
+		}
+		return area;
+	}
+
+	public static int m2(int[] height) {
+		int size = height.length - 1;
+		int wide = size;
+		int area = Math.min(height[0], height[size]) * wide;
+		while (wide > 0) {
+			wide--;
+			for (int i = 0; (i + wide) <= size; i++) {
+				int tempHeight = Math.min(height[i], height[i + wide]);
+				int tempArea = wide * tempHeight;
+				if (area < tempArea) {
+					area = tempArea;
+				}
+			}
+		}
+		return area;
 	}
 
 }
