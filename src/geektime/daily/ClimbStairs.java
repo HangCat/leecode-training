@@ -3,7 +3,7 @@ package geektime.daily;
 /**
  * @author zhouyp
  * @program leecodetraing
- * @description 假设你正在爬楼梯。需要 n 阶你才能到达楼顶。
+ * @description  70  假设你正在爬楼梯。需要 n 阶你才能到达楼顶。
  * 每次你可以爬 1 或 2 个台阶。你有多少种不同的方法可以爬到楼顶呢？
  * 注意：给定 n 是一个正整数。
  * @create 2020-06-22
@@ -75,23 +75,22 @@ public class ClimbStairs {
 
 	//记忆化递归
 	public static int r2(int n) {
-		if (memo[n] <= 0) {
-			if (n == 0 || n == 1) memo[n] = 1;
-			else
-				memo[n] = r2(n - 1) + r2(n - 2);
-		}
+		if (memo[n] > 0) return memo[n];
+		if (n == 0 || n == 1) memo[n] = 1;
+		else
+			memo[n] = r2(n - 1) + r2(n - 2);
 		return memo[n];
 	}
 
 	//传统动态规划
 	public static int dp1(int n) {
 		if (n <= 1) return 1;
-		final int[] dp = new int[n + 1];
-		dp[0] = dp[1] = 1;
-		for (int i = 2; i < dp.length; i++) {
-			dp[i] = dp[i - 1] + dp[i - 2];
+		final int[] tempMemo = new int[n + 1];
+		tempMemo[0] = tempMemo[1] = 1;
+		for (int i = 2; i < tempMemo.length; i++) {
+			tempMemo[i] = tempMemo[i - 1] + tempMemo[i - 2];
 		}
-		return dp[n];
+		return tempMemo[n];
 	}
 
 	// 优化后的动态规划

@@ -44,10 +44,9 @@ public class MaxArea {
 		int wide = height.length - 1;
 
 		int p = 0, q = wide;
-		int minHeight, area = 0;
+		int minHeight = 0, area = 0;
 
 		for (; wide >= 0; wide--) {
-			minHeight = height[p];
 			if (height[p] > height[q]) {
 				minHeight = height[q];
 				q--;
@@ -63,43 +62,28 @@ public class MaxArea {
 	}
 
 	public static void main(String[] args) {
-//		int[] aa = {1, 8, 6, 2, 5, 4, 8, 3, 7};
-		int[] aa = {2, 1};
+		int[] aa = {1, 8, 6, 2, 5, 4, 8, 3, 7};
+//		int[] aa = {2, 1};
 //		int[] aa = {1, 2, 4, 3};
 		System.out.println("maxArea(aa) = " + maxAreaInForce(aa));
 		System.out.println("maxAreaInDoubleIndex(aa) = " + maxAreaInDoubleIndex(aa));
+
+		System.out.println("m1(aa) = " + m1(aa));
 	}
 
 	public static int m1(int[] height) {
-		int size = height.length - 1;
-		int wide = size;
-		int area = Math.min(height[0], height[size]) * wide;
-		while (wide > 0) {
-			wide--;
-			for (int i = 0; (i + wide) <= size; i++) {
-				int tempHeight = Math.min(height[i], height[i + wide]);
-				int temp = wide * tempHeight;
-				if (area < temp) {
-					area = temp;
-				}
+		int wide = height.length - 1;
+		int p = 0, q = wide;
+		int area = 0, minHeight;
+		for (; wide > 0; wide--) {
+			if (height[p] > height[q]) {
+				minHeight = height[q];
+				q--;
+			} else {
+				minHeight = height[p];
+				p++;
 			}
-		}
-		return area;
-	}
-
-	public static int m2(int[] height) {
-		int size = height.length - 1;
-		int wide = size;
-		int area = Math.min(height[0], height[size]) * wide;
-		while (wide > 0) {
-			wide--;
-			for (int i = 0; (i + wide) <= size; i++) {
-				int tempHeight = Math.min(height[i], height[i + wide]);
-				int tempArea = wide * tempHeight;
-				if (area < tempArea) {
-					area = tempArea;
-				}
-			}
+			area = Math.max(area, minHeight * wide);
 		}
 		return area;
 	}
