@@ -1,4 +1,4 @@
-package geektime.daily;
+package geektime.practice.linkedList;
 
 /**
  * @author zhouyp

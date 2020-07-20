@@ -1,4 +1,4 @@
-package geektime.daily;
+package geektime.practice.singleindex;
 
 import java.util.HashMap;
 import java.util.Map;

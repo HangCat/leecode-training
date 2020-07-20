@@ -1,4 +1,4 @@
-package geektime.daily;
+package geektime.practice.singleindex;
 
 import static primary.CommonUtil.printIntArr;
 

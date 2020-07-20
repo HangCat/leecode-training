@@ -1,4 +1,4 @@
-package geektime;
+package geektime.practice.doubleindex;
 
 /**
  * @author zhouyp
@@ -73,19 +73,16 @@ public class MaxArea {
 
 	public static int m1(int[] height) {
 		int wide = height.length - 1;
-		int p = 0, q = wide;
-		int area = 0, minHeight;
-		for (; wide > 0; wide--) {
-			if (height[p] > height[q]) {
-				minHeight = height[q];
-				q--;
-			} else {
-				minHeight = height[p];
-				p++;
-			}
-			area = Math.max(area, minHeight * wide);
+
+		int left = 0, right = wide;
+		int maxHeight;
+		int maxArea = Math.min(height[left], height[right]) * wide;
+
+		for (; wide >= 0; wide--) {
+			maxHeight = height[left] > height[right] ? height[right--] : height[left++];
+			maxArea = Math.max(maxHeight * wide, maxArea);
 		}
-		return area;
+		return maxArea;
 	}
 
 }
