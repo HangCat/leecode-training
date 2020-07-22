@@ -1,8 +1,6 @@
 package geektime.practice.tree;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Stack;
+import java.util.*;
 
 /**
  * @author zhouyp
@@ -42,33 +40,58 @@ public class BuildTree {
 	}
 
 	TreeNode bdt(int[] inorder, int[] preorder) {
-		final Map<Integer, Integer> rootIndexMap = new HashMap<>();
+		final Map<Integer, Integer> inorderIndexMap = new HashMap<>();
 		for (int i = 0; i < inorder.length; i++) {
-			rootIndexMap.put(inorder[i], i);
+			inorderIndexMap.put(inorder[i], i);
 		}
-		return bdt(preorder, rootIndexMap,
-				0, preorder.length - 1, 0, inorder.length - 1);
+		return bdt(preorder, inorderIndexMap, 0, inorder.length - 1,
+				0, preorder.length - 1);
 	}
 
-	private TreeNode bdt(int[] preorder, Map<Integer, Integer> rootIndexMap,
-	                     int preLeft, int preRight, int inLeft, int inRight) {
-		if (preLeft > preRight || inLeft > inRight) return null;
+	private TreeNode bdt(int[] preorder, Map<Integer, Integer> inorderIndexMap,
+	                     int inLeft, int inRight, int preLeft, int preRight) {
+		if (inLeft > inRight || preLeft > preRight) return null;
 
 		final int rootVal = preorder[preLeft];
 		final TreeNode root = new TreeNode(rootVal);
 
-		final int pivot = rootIndexMap.get(rootVal);
-		final int leftSubTreeSize = pivot - inLeft;
+		final int rootIndex = inorderIndexMap.get(rootVal);
+		final int leftSubTreeSize = rootIndex - preLeft;
 
-		root.left = bdt(preorder, rootIndexMap,
-				preLeft + 1, preLeft + leftSubTreeSize - 1, inLeft, pivot - 1);
+		root.left = bdt(preorder, inorderIndexMap,
+				inLeft, rootIndex - 1,
+				preLeft + 1, preLeft + leftSubTreeSize);
 
-		root.right = bdt(preorder, rootIndexMap,
-				preLeft + leftSubTreeSize + 1, preRight, pivot + 1, inRight);
+		root.right = bdt(preorder, inorderIndexMap,
+				rootIndex + 1, inRight,
+				preLeft + leftSubTreeSize + 1, preRight);
 
 		return root;
 	}
 
+	public TreeNode bdti(int[] preorder, int[] inorder) {
+		if (preorder == null || preorder.length == 0) return null;
+		final TreeNode root = new TreeNode(preorder[0]);
+		final Deque<TreeNode> stack = new LinkedList<>();
+		stack.push(root);
+		int rootIndex = 0;
+		for (int i = 1; i < preorder.length; i++) {
+			final int rootVal = preorder[i];
+			TreeNode node = stack.peek();
+			if (node.val != inorder[rootIndex]) {
+				node.left = new TreeNode(rootVal);
+				stack.push(node.left);
+			} else {
+				while (!stack.isEmpty() && stack.peek().val == inorder[rootIndex]) {
+					node = stack.pop();
+					rootIndex++;
+				}
+				node.right = new TreeNode(rootIndex);
+				stack.push(node.right);
+			}
+		}
+		return root;
+	}
 
 	public TreeNode buildTreeIterator(int[] preorder, int[] inorder) {
 		if (preorder == null || preorder.length == 0) {
@@ -85,7 +108,8 @@ public class BuildTree {
 				node.left = new TreeNode(preorderVal);
 				stack.push(node.left);
 			} else {
-				while (!stack.isEmpty() && stack.peek().val == inorder[inorderIndex]) {
+				while (!stack.isEmpty() &&
+						stack.peek().val == inorder[inorderIndex]) {
 					node = stack.pop();
 					inorderIndex++;
 				}
