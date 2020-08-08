@@ -35,22 +35,22 @@ public class MinPathSum {
 
 		int[][] memo = new int[col + 1][row + 1];
 //		return minPathSumDP(grid);
-		return minPathSumStupidRecursion(grid, row, col, memo);
+		return minPathSumMemoRecursion(grid, row, col, memo);
 //		return minPathSumStupidRecursion(grid, row, col);
 	}
 
 
-	private static int minPathSumStupidRecursion(int[][] grid, int row, int col, int[][] memo) {
+	private static int minPathSumMemoRecursion(int[][] grid, int row, int col, int[][] memo) {
 		if (col < 0 || row < 0) return 0;
 		if (memo[col][row] > 0) return memo[col][row];
 		if (row == 0 && col == 0) memo[col][row] = grid[0][0];
 		if (row == 0) {
-			memo[col][row] = minPathSumStupidRecursion(grid, row, col - 1, memo) + grid[col][row];
+			memo[col][row] = minPathSumMemoRecursion(grid, row, col - 1, memo) + grid[col][row];
 		} else if (col == 0) {
-			memo[col][row] = minPathSumStupidRecursion(grid, row - 1, col, memo) + grid[col][row];
+			memo[col][row] = minPathSumMemoRecursion(grid, row - 1, col, memo) + grid[col][row];
 		} else {
-			final int upMin = minPathSumStupidRecursion(grid, row, col - 1, memo);
-			final int leftMin = minPathSumStupidRecursion(grid, row - 1, col, memo);
+			final int upMin = minPathSumMemoRecursion(grid, row, col - 1, memo);
+			final int leftMin = minPathSumMemoRecursion(grid, row - 1, col, memo);
 			memo[col][row] = Math.min(leftMin, upMin) + grid[col][row];
 		}
 		return memo[col][row];
@@ -96,4 +96,33 @@ public class MinPathSum {
 
 		return dp[row - 1][col - 1];
 	}
+
+
+	private static int minPathSumStupidRecursion1(int[][] grid, int row, int col) {
+		if (row == 0 && col == 0) return grid[col][row];
+		if (row == 0)
+			return minPathSumStupidRecursion1(grid, row, col - 1);
+		if (col == 0)
+			return minPathSumStupidRecursion1(grid, row - 1, col);
+		final int left = minPathSumStupidRecursion1(grid, row - 1, col);
+		final int up = minPathSumStupidRecursion1(grid, row, col - 1);
+		return Math.min(left, up);
+	}
+
+	private static int minPathMemo(int[][] grid, int row, int col, int[][] memo) {
+		if (row < 0 || col < 0) return 0;
+		if (memo[col][row] > 0) return memo[col][row];
+		if (row == 0 && col == 0) memo[col][row] = grid[col][row];
+		if (row == 0)
+			memo[col][row] = minPathMemo(grid, row, col - 1, memo);
+		else if (col == 0)
+			memo[col][row] = minPathMemo(grid, row - 1, col, memo);
+		else {
+			final int left = minPathMemo(grid, row - 1, col, memo);
+			final int up = minPathMemo(grid, row, col - 1, memo);
+			memo[col][row] = Math.min(left, up);
+		}
+		return memo[col][row];
+	}
+
 }

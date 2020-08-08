@@ -1,5 +1,7 @@
 package geektime.practice.dp;
 
+import java.util.Arrays;
+
 /**
  * @author zhouyp
  * @program leecode-training
@@ -24,38 +26,33 @@ public class CoinChange {
 		int[] coins = {1, 2, 5};
 		int target = 11;
 		System.out.println("coinChange = " + coinChange(coins, target));
-
-
-//		Optional<TreeNode> userOpt = Optional.ofNullable(user);
-//		Optional<String> roleIdOpt = userOpt.map(TreeNode::getRoleId);
-
+		System.out.println("coinChangeIterate = " + coinChangeIterate(coins, target));
 	}
 
 	static int coinChange(int[] coins, int amount) {
 		if (amount < 1) return 0;
-		return coinChangeRecursion(coins, amount);
-//		return coinChangeMemo(coins, amount, new int[amount]);
+		return coinChangeMemo(coins, amount, new int[amount]);
 	}
 
-
-	private static int coinChangeRecursion(int[] coins, int amount) {
-		if (amount < 0) return -1;
-		if (amount == 0) return 0;
-		int min = Integer.MAX_VALUE;
-		for (int coin : coins) {
-			final int res =
-					coinChangeRecursion(coins, amount - coin);
-			if (res >= 0 && res < min)
-				min = 1 + res;
-			else min = res;
+	static int coinChangeIterate(int[] coins, int amount) {
+		if (amount < 1) return 0;
+		final int[] dp = new int[amount + 1];
+		Arrays.fill(dp, amount + 1);
+		dp[0] = 0;
+		for (int i = 0; i < amount; i++) {
+			for (int coin : coins) {
+				if (coin < i) {
+					dp[i] = Math.min(dp[i], dp[i - coin] + 1);
+				}
+			}
 		}
-		return min;
+		return dp[amount] > amount ? -1 : dp[amount];
 	}
 
 	private static int coinChangeMemo(int[] coins, int amount, int[] memo) {
 		if (amount < 0) return -1;
 		if (amount == 0) return 0;
-		if (memo[amount - 1] > 0) return memo[amount - 1];
+		if (memo[amount - 1] != 0) return memo[amount - 1];
 
 		int min = Integer.MAX_VALUE;
 		for (int coin : coins) {
@@ -66,4 +63,5 @@ public class CoinChange {
 		memo[amount - 1] = (min == Integer.MAX_VALUE) ? -1 : min;
 		return memo[amount - 1];
 	}
+
 }

@@ -43,7 +43,7 @@ public class BubbleSorting {
 	 */
 	public static void unknownSort2(int[] array, int n) {
 		for (int i = 0; i < n; i++) {
-			for (int j = i; j > 0; j--) {
+			for (int j = i + 1; j > 0; j--) {
 				if (array[j] < array[j - 1]) {
 					final int temp = array[j];
 					array[j] = array[j - 1];

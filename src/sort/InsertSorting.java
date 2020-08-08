@@ -14,7 +14,8 @@ public class InsertSorting {
 	public static void main(String[] args) {
 		final int[] ints1 = genRandomIntArr(10);
 		printIntArr(ints1);
-		insertSort(ints1);
+		insertSort1(ints1);
+//		insertSort(ints1);
 		printIntArr(ints1);
 	}
 
@@ -48,4 +49,18 @@ public class InsertSorting {
 			arr[j] = cmp;
 		}
 	}
+
+
+	static void insertSort1(int[] arr) {
+		for (int i = 0; i < arr.length; i++) {
+			final int tmp = arr[i];
+			int j = i;
+			while (j > 0 && arr[j - 1] > tmp) {
+				arr[j] = arr[--j];
+			}
+			arr[j] = tmp;
+		}
+	}
+
+
 }
