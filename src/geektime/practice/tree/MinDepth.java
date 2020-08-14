@@ -1,7 +1,5 @@
 package geektime.practice.tree;
 
-import javafx.util.Pair;
-
 import java.util.Deque;
 import java.util.LinkedList;
 import java.util.Queue;
